@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+body {
+  background-color: #f7fafc;
+}
+
+
+@layer base {
+  h1 {
+    @apply text-4xl md:text-6xl text-default my-3 ;
+  }
+  h2 {
+    @apply text-xl md:text-2xl text-default my-3 md:my-10;
+  }
+  h3 {
+    @apply text-xl font-bold;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  p {
+    @apply mb-5;
+  }
+}

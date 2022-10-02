@@ -1,0 +1,50 @@
+version: '3.9'
+
+# External network
+networks:
+  caddyweb:
+    external: true
+
+
+volumes:
+  mongodb-data:
+
+services:
+
+  # FastAPI backend
+  # fl-api:
+  #   container_name: fl-api
+  #   build:
+  #     context: .
+  #   depends_on:
+  #     - cms-db
+  #   ports:
+  #     - "8000:8000"
+  #   stop_signal: SIGINT
+  #   command: uvicorn fl_search.main:app --reload --host 0.0.0.0 --port 8000
+  #   environment:
+  #     PYTHONPATH: .
+  #     SEARCH_ORIGIN_URI: https://flora-search-api.apidjk.top
+  #   volumes:
+  #     - '.:/ubuntu:delegated'
+  #   networks:
+  #     - caddyweb
+
+
+  # MongoDB database
+  cms-db:
+    image: mongo:5.0
+    container_name: cms-db
+    command: mongod --port 27017
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    volumes:
+      - mongodb-data:/data/cms-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    restart: unless-stopped
+    networks:
+      - caddyweb
