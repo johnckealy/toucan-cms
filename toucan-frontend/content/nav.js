@@ -1,37 +1,19 @@
-import { GrUserPolice } from 'react-icons/gr';
-import { FaUserTie } from 'react-icons/fa';
-import { ImLibrary } from 'react-icons/im';
-import { GiEuropeanFlag } from 'react-icons/gi';
+
+import {TiThListOutline } from 'react-icons/ti';
+import { FaUpload } from 'react-icons/fa';
 
 
 export const navItems = [
   {
-    "href": "/",
-    "heading": "About John",
-    "icon": <GrUserPolice />,
-    "subheading": "Some background",
-    "childItems": [
-      {
-        "heading": "hello"
-      }
-    ]
+    "href": "/dashboard/upload",
+    "heading": "Add to Scrapbook",
+    "icon": <FaUpload />,
+    "subheading": "Add some shit",
   },
   {
-    "href": "/",
-    "heading": "Technical Skills",
-    "subheading": "What I can do",
-    "icon": <ImLibrary />
-  },
-  {
-    "href": "/",
-    "heading": "Personal Projects",
-    "subheading": "What I've done",
-    "icon": <FaUserTie />
-  },
-  {
-    "href": "/",
-    "heading": "Testimonial",
-    "subheading": "What others say",
-    "icon": <GiEuropeanFlag />
+    "href": "/dashboard/scrapbook",
+    "heading": "My Scrapbook Items",
+    "subheading": "Look at the shit I added",
+    "icon": <TiThListOutline />
   }
 ]

@@ -12,19 +12,19 @@ volumes:
 services:
 
   # FastAPI backend
-  # fl-api:
-  #   container_name: fl-api
+  # toucan-api:
+  #   container_name: toucan-api
   #   build:
   #     context: .
   #   depends_on:
-  #     - cms-db
+  #     - toucan-db
   #   ports:
   #     - "8000:8000"
   #   stop_signal: SIGINT
-  #   command: uvicorn fl_search.main:app --reload --host 0.0.0.0 --port 8000
+  #   command: uvicorn toucan_search.main:app --reload --host 0.0.0.0 --port 8000
   #   environment:
   #     PYTHONPATH: .
-  #     SEARCH_ORIGIN_URI: https://flora-search-api.apidjk.top
+  #     SEARCH_ORIGIN_URI: https://toucanora-search-api.apidjk.top
   #   volumes:
   #     - '.:/ubuntu:delegated'
   #   networks:
@@ -32,16 +32,16 @@ services:
 
 
   # MongoDB database
-  cms-db:
+  toucan-db:
     image: mongo:5.0
-    container_name: cms-db
+    container_name: toucan-db
     command: mongod --port 27017
     ports:
       - 27017:27017
     expose:
       - 27017
     volumes:
-      - mongodb-data:/data/cms-db
+      - mongodb-data:/data/toucan-db
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: mongo

@@ -1,8 +1,11 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon, MenuIcon, HomeIcon } from '@heroicons/react/outline'
+import { CgLogOut } from 'react-icons/cg'
 import Link from 'next/link'
 import { navItems } from '@/content/nav'
+import { signOut } from "next-auth/react"
+
 
 
 export default function SideNav({ navHeader, children }) {
@@ -16,17 +19,17 @@ export default function SideNav({ navHeader, children }) {
           <XIcon className="h-10 w-10" aria-hidden="true" />
         </button>
         <div className="flex h-full flex-col min-w-max overflow-hidden bg-secondary-bg">
-          <div className="p-4 sm:px-6 ">
-            <Link href="/">
-              <a>
-                <HomeIcon className='hover:opacity-60 w-7 h-7 md:ml-auto' />
-              </a>
-            </Link>
-          </div>
+          <button className=""
+            onClick={() => signOut()}>
+            <div className='flex gap-2 group justify-end p-4 text-greyed hover:text-black items-center'>
+              <span className='text-sm'>Logout</span>
+              <CgLogOut className='w-5 h-5 scale-100 group-hover:scale-125 transition' />
+            </div>
+          </button>
           <div className="relative mt-6 flex-1 space-y-4">
             {navItems.map((item) => {
               return (
-                <div key={item.name}>
+                <div key={item.heading}>
                   <Link href={item.href}>
                     <a className="pl-6 md:pl-10 md:pr-28 flex px-3 py-2 hover:bg-default-bg hover:translate-x-1 transition">
                       <div className='flex items-center gap-4'>

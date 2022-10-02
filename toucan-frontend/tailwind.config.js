@@ -19,6 +19,15 @@ module.exports = {
         'default-light': '#f8f8ff',
         'default-light-hover': '#f8f8ff',
       },
+      container: {
+        padding: {
+          DEFAULT: '1rem',
+          sm: '2rem',
+          lg: '4rem',
+          xl: '5rem',
+          '2xl': '6rem',
+        }
+      },
       // transitionProperty: {
       //   'width': 'width',
       //   'height': 'height',

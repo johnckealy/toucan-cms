@@ -1,24 +1,25 @@
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/router"
+import axios from "axios"
+import Dashboard from '@/components/Dashboard'
+import Login from '@/components/Login'
 
-import React from 'react'
-import { NextSeo } from 'next-seo';
-import Nextify from '@/components/nextifyHome'
+const HomePage = () => {
+  const router = useRouter()
+  const { data: session, status } = useSession({ required: true })
+  const loading = status === "loading"
+  const authenticated = status === "authenticated"
 
-const HomePage = ({ tagline }) => {
-  return (
-    <>
 
-      <NextSeo title="Change me I'm the home page!" description="" />
 
-      <Nextify />
-
-    </>
-  )
+  if (authenticated) {
+    return  <Dashboard />
+  }
+  else {
+    return  <Login />
+  }
 }
 
-export async function getStaticProps() {
-  return {
-    props: { tagline: "The pickleback press" },
-  };
-}
 
 export default HomePage
