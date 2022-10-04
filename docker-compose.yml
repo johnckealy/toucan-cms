@@ -19,9 +19,9 @@ services:
     depends_on:
       - toucan-db
     ports:
-      - "8000:8000"
+      - "8001:8001"
     stop_signal: SIGINT
-    command: uvicorn toucan-backend.cms.main:app --reload --host 0.0.0.0 --port 8000
+    command: uvicorn toucan-backend.cms.main:app --reload --host 0.0.0.0 --port 8001
     env_file:
       - .env
     volumes:
