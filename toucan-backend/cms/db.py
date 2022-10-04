@@ -2,16 +2,16 @@
 import motor
 from beanie import init_beanie
 from pydantic import BaseSettings
-from cms.models import User
+from cms.models import User, ScrapbookItem
 
 
 class DBSettings(BaseSettings):
     """Base Settings for the database, note that these
     will read automatically from environment variables"""
-    mongo_username: str = 'mongo'
-    mongo_password: str = 'mongo'
-    mongo_host: str = 'cms-db'
-    mongo_port: str = '27017'
+    mongo_initdb_root_username: str
+    mongo_initdb_root_password: str
+    mongo_host: str
+    mongo_port: str
 
 
 class MongoClient():
@@ -23,4 +23,4 @@ class MongoClient():
         )
 
     async def initalizedb(self):
-        await init_beanie(database=self.client.cms, document_models=[User])
+        await init_beanie(database=self.client.cms, document_models=[User, ScrapbookItem])

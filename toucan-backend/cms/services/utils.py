@@ -1,13 +1,14 @@
-from cms.models import User
+from cms.models import User, ScrapbookItem
 import requests
-from cms.models import Tokens
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-
-async def get_or_create_user(tokens: Tokens):
+async def get_or_create_user(token: str):
     """Query the Google API to return user info based on the Google access token. Create
     a new user in our DB if one does not exist."""
-    response = requests.get(f"https://www.googleapis.com/oauth2/v3/userinfo?access_token={tokens.access_token}").json()
+    response = requests.get(f"https://www.googleapis.com/oauth2/v3/userinfo?access_token={token}").json()
     user = await User.find_one(User.sub == response.get('sub'), fetch_links=True)
     if not user:
       user = User(
@@ -19,3 +20,20 @@ async def get_or_create_user(tokens: Tokens):
       )
       await user.insert()
     return user
+
+
+async def create_or_update_scrapbook_item(user: User, scrapbook_item: ScrapbookItem):
+    """Create or update a scrapbook item for a user."""
+    try:
+        old_entry = await ScrapbookItem.get(scrapbook_item.id)
+    except:
+        old_entry = None
+    if not old_entry:
+        scrapbook_item = ScrapbookItem(
+            heading=scrapbook_item.heading,
+            user=user
+        )
+        scrapbook_item = await scrapbook_item.insert()
+    else:
+        await old_entry.set({ScrapbookItem.heading: scrapbook_item.heading})
+    return scrapbook_item

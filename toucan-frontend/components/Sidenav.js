@@ -1,31 +1,38 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { XIcon, MenuIcon, HomeIcon } from '@heroicons/react/outline'
 import { CgLogOut } from 'react-icons/cg'
 import Link from 'next/link'
 import { navItems } from '@/content/nav'
 import { signOut } from "next-auth/react"
-
-
+import { useSession } from "next-auth/react"
+import Image from 'next/image'
+import { MdClose } from 'react-icons/md'
+import { AiOutlineMenu } from 'react-icons/ai'
 
 export default function SideNav({ navHeader, children }) {
   const [open, setOpen] = useState(false)
+  const { data: session } = useSession({ required: true })
 
   const SideNavInner = () => {
     return (
       <>
-        <button className="md:hidden absolute top-0 right-0 flex pt-4 pr-2 text-default hover:text-default-hover" onClick={() => setOpen(false)}>
+        <button className="md:hidden absolute top-0 pl-3 flex pt-4 pr-2 text-default hover:text-default-hover" onClick={() => setOpen(false)}>
           <span className="sr-only">Close panel</span>
-          <XIcon className="h-10 w-10" aria-hidden="true" />
+          <MdClose className="h-10 w-10" aria-hidden="true" />
         </button>
         <div className="flex h-full flex-col min-w-max overflow-hidden bg-secondary-bg">
-          <button className=""
-            onClick={() => signOut()}>
-            <div className='flex gap-2 group justify-end p-4 text-greyed hover:text-black items-center'>
-              <span className='text-sm'>Logout</span>
-              <CgLogOut className='w-5 h-5 scale-100 group-hover:scale-125 transition' />
+          <div className='flex flex-col items-end p-3 '>
+            <div className="flex items-center gap-2">
+              <Image className="rounded-full" src={session.user.image} width={20} height={20} />
+              {session.user.name}
             </div>
-          </button>
+            <button className=""  onClick={() => signOut()}>
+              <div className='flex gap-2 group justify-end text-greyed hover:text-black items-center'>
+                <span className='text-sm'>Logout</span>
+                <CgLogOut className='w-5 h-5 scale-100 group-hover:scale-125 transition' />
+              </div>
+            </button>
+          </div>
           <div className="relative mt-6 flex-1 space-y-4">
             {navItems.map((item) => {
               return (
@@ -56,7 +63,7 @@ export default function SideNav({ navHeader, children }) {
       {/* Mobile Only */}
       <button className="md:hidden rounded-md text-default hover:text-default-hover focus:outline-none focus:ring-2 focus:ring-white" onClick={() => setOpen(true)}>
         <span className="sr-only">Open panel</span>
-        <MenuIcon className="h-10 w-10" aria-hidden="true" />
+        <AiOutlineMenu className="h-10 w-10" aria-hidden="true" />
       </button>
 
       {/* Desktop Only */}

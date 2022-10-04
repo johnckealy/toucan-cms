@@ -1,23 +1,27 @@
-import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/router"
-import axios from "axios"
 import Dashboard from '@/components/Dashboard'
 import Login from '@/components/Login'
+import Btn from '@/components/button'
 
 const HomePage = () => {
-  const router = useRouter()
   const { data: session, status } = useSession({ required: true })
-  const loading = status === "loading"
   const authenticated = status === "authenticated"
 
-
-
   if (authenticated) {
-    return  <Dashboard />
+    return (
+      <Dashboard>
+        <div className="grid place-items-center md:p-32">
+          <h1>Hi {session.user.name}!</h1>
+          <div className="flex gap-4 p-5">
+            <Btn href="/dashboard/upload">Upload item</Btn>
+            <Btn href="dashboard/upload">Scrapbook</Btn>
+          </div>
+        </div>
+      </Dashboard>
+    )
   }
   else {
-    return  <Login />
+    return <Login />
   }
 }
 

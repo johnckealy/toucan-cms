@@ -16,9 +16,9 @@ const nextConfig = {
   //   )
   //   return cfg;
   // },
-  // images: {
-  //   domains: [],
-  // },
+  images: {
+    domains: ['lh3.googleusercontent.com'],
+  },
   // async redirects() {
   //   return [
   //     {

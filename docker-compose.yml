@@ -12,23 +12,22 @@ volumes:
 services:
 
   # FastAPI backend
-  # toucan-api:
-  #   container_name: toucan-api
-  #   build:
-  #     context: .
-  #   depends_on:
-  #     - toucan-db
-  #   ports:
-  #     - "8000:8000"
-  #   stop_signal: SIGINT
-  #   command: uvicorn toucan_search.main:app --reload --host 0.0.0.0 --port 8000
-  #   environment:
-  #     PYTHONPATH: .
-  #     SEARCH_ORIGIN_URI: https://toucanora-search-api.apidjk.top
-  #   volumes:
-  #     - '.:/ubuntu:delegated'
-  #   networks:
-  #     - caddyweb
+  toucan-api:
+    container_name: toucan-api
+    build:
+      context: .
+    depends_on:
+      - toucan-db
+    ports:
+      - "8000:8000"
+    stop_signal: SIGINT
+    command: uvicorn toucan_search.main:app --reload --host 0.0.0.0 --port 8000
+    env_file:
+      - .env
+    volumes:
+      - '.:/ubuntu:delegated'
+    networks:
+      - caddyweb
 
 
   # MongoDB database
@@ -42,9 +41,8 @@ services:
       - 27017
     volumes:
       - mongodb-data:/data/toucan-db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: mongo
+    env_file:
+      - .env
     restart: unless-stopped
     networks:
       - caddyweb

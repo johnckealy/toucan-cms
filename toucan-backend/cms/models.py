@@ -1,23 +1,8 @@
 from optparse import Option
 from typing import Optional
-from beanie import Document
+from beanie import Document, Link, PydanticObjectId
 from pydantic import BaseModel
 
-
-class Tokens(BaseModel):
-    """Google JWT Tokens coming from next-auth"""
-    access_token: str
-
-
-class ScrapbookItem(BaseModel):
-    """ScrapbookItem model for the database"""
-    heading: Optional[str]
-
-
-class UserUpdateRequest(BaseModel):
-    """User update request"""
-    tokens: Tokens
-    scrapbook_item: Optional[ScrapbookItem]
 
 
 
@@ -28,4 +13,12 @@ class User(Document):
     given_name:     Optional[str]
     family_name:    Optional[str]
     image_url:      Optional[str]
-    scrapbook_item: Optional[ScrapbookItem]
+
+
+
+
+
+class ScrapbookItem(Document):
+    """ScrapbookItem model for the database"""
+    user: Optional[Link[User]]
+    heading: Optional[str]
