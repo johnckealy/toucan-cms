@@ -8,7 +8,7 @@ export default function ProtectedPage() {
   const authenticated = status === "authenticated"
 
   const sendJWT = async () => {
-    const res = await axios.post('http://localhost:8001/scrapbook',
+    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/scrapbook`,
       {
         tokens: {
           access_token: session.accessToken,
@@ -46,7 +46,7 @@ export default function ProtectedPage() {
       <div className="p-32">
         <h1>Protected Page</h1>
         <p>
-          Youi're in! {session.user.email} <br />
+          Youre in! {session.user.email} <br />
           <button onClick={sendJWT} className="ring rounded p-3 m-5">Send JWT</button>
         </p>
       </div>

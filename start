@@ -1,0 +1,2 @@
+cp .env toucan-backend/ && cp .env toucan-frontend/
+docker compose up --build -d --force-recreate

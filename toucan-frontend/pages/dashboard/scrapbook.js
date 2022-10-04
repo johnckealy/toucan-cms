@@ -13,7 +13,7 @@ const Upload = () => {
     const getScrapbook = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:8001/scrapbooks',
+          `${process.env.NEXT_PUBLIC_API_URI}/scrapbooks`,
           {
             headers: {
               access_token: session.accessToken,

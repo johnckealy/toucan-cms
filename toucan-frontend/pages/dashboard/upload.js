@@ -10,11 +10,13 @@ const Upload = () => {
   const [saving, setSaving] = useState(false);
   const [scrapbookId, setScrapbookId] = useState(null);
 
+  console.log(process.env.NEXT_PUBLIC_API_URI)
+
   const sendScrapItem = async () => {
     setSaving(true)
     try {
       const response = await axios.post(
-        'http://localhost:8001/scrapbooks',
+        `${process.env.NEXT_PUBLIC_API_URI}/scrapbooks`,
         {
           heading: title,
           _id: scrapbookId

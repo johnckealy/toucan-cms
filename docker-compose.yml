@@ -5,9 +5,9 @@ networks:
   caddyweb:
     external: true
 
-
 volumes:
   mongodb-data:
+
 
 services:
 
@@ -15,13 +15,13 @@ services:
   toucan-api:
     container_name: toucan-api
     build:
-      context: .
+      context: ./toucan-backend
     depends_on:
       - toucan-db
     ports:
       - "8000:8000"
     stop_signal: SIGINT
-    command: uvicorn toucan_search.main:app --reload --host 0.0.0.0 --port 8000
+    command: uvicorn toucan-backend.cms.main:app --reload --host 0.0.0.0 --port 8000
     env_file:
       - .env
     volumes:
@@ -35,14 +35,23 @@ services:
     image: mongo:5.0
     container_name: toucan-db
     command: mongod --port 27017
-    ports:
-      - 27017:27017
-    expose:
-      - 27017
     volumes:
       - mongodb-data:/data/toucan-db
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - caddyweb
+
+
+  #  Frontend Next app
+  toucan-next-frontend:
+    build:
+      context: ./toucan-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    command: yarn start
     networks:
       - caddyweb

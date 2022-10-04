@@ -19,7 +19,7 @@ class MongoClient():
     def __init__(self) -> None:
         dbs = DBSettings()
         self.client = motor.motor_asyncio.AsyncIOMotorClient(
-            f"mongodb://{dbs.mongo_username}:{dbs.mongo_password}@{dbs.mongo_host}:{dbs.mongo_port}"
+            f"mongodb://{dbs.mongo_initdb_root_username}:{dbs.mongo_initdb_root_password}@{dbs.mongo_host}:{dbs.mongo_port}"
         )
 
     async def initalizedb(self):

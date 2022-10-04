@@ -34,7 +34,7 @@ export default function SignIn() {
 
           <div className="">
             {/* <Image src="/logo.svg" width={200} height={200} /> */}
-            <h2>Sonia's Scrapbook</h2>
+            <h2>Sonias Scrapbook</h2>
           </div>
 
           <div className="">
