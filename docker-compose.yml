@@ -34,9 +34,7 @@ services:
   toucan-db:
     image: mongo:5.0
     container_name: toucan-db
-    command: mongod --port 27017
-    ports:
-      - "27017:27017"
+    command: mongod --port 27019
     volumes:
       - mongodb-data:/data/toucan-db
     env_file:
