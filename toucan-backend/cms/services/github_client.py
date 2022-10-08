@@ -20,9 +20,8 @@ class GithubClient:
 
     def create_new_branch(self) -> None:
         """Create a new branch from the trunk"""
-        repo = self.client.get_repo("johnckealy/control")
-        sb = repo.get_branch(self.trunk)
-        repo.create_git_ref(ref='refs/heads/' + self.toucan_branch, sha=sb.commit.sha)
+        sb = self.repo.get_branch(self.trunk)
+        self.repo.create_git_ref(ref='refs/heads/' + self.toucan_branch, sha=sb.commit.sha)
 
     def upsert_file(self, file_path: str, file_content: str) -> None:
         """Upsert a file to the toucan branch"""
@@ -72,10 +71,15 @@ class GithubClient:
 
 if __name__ == '__main__':
     github_client = GithubClient()
+
+    with open('cms/john.jpg', 'rb') as file:
+        content = file.read()
+
+
     github_client.upsert_file(
-        file_path="goodbye3.json",
-        file_content='{Hello: whattt}\n'
+        file_path="john.jpg",
+        file_content=content
     )
 
     github_client.create_pr()
-    github_client.merge_to_main()
+    # github_client.merge_to_main()

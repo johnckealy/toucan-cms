@@ -21,4 +21,4 @@ class User(Document):
 class ScrapbookItem(Document):
     """ScrapbookItem model for the database"""
     user: Optional[Link[User]]
-    heading: Optional[str]
+    title: Optional[str]

@@ -1,12 +1,14 @@
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, File, UploadFile, Request, File, Form, Header
 from fastapi.middleware.cors import CORSMiddleware
 from cms.db import MongoClient
 from cms.models import User, ScrapbookItem
 from cms.services.utils import get_or_create_user, create_or_update_scrapbook_item
 from cms.services.github_client import GithubClient
+from typing import Union
 
-SEARCH_ORIGIN_URI=os.environ.get('SEARCH_ORIGIN_URI', 'http://127.0.0.1:3000')
+
+SEARCH_ORIGIN_URI=os.environ.get('NEXTAUTH_URL', 'http://localhost:3000')
 
 
 # TODO Add a way to stay logged into google
@@ -18,7 +20,7 @@ origins = [ SEARCH_ORIGIN_URI ]
 # TODO Restrict permissions for CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,18 +48,20 @@ async def scrapbook():
     return await ScrapbookItem.find().to_list()
 
 
-@app.post("/scrapbooks")
-async def add_scrapbook_item(request: Request, scrapbook_item: ScrapbookItem):
+@app.post("/upload/")
+async def create_upload_file(upload: UploadFile, access_token: Union[str, None] = Header(default=None, convert_underscores=False), type: str = Form(...), title: str = Form(...), _id: str = Form(...)):
     """Return a list of all the scrapbook items for a user."""
-    user = await get_or_create_user(request.headers['access_token'])
-    scrapbook_item = await create_or_update_scrapbook_item(user, scrapbook_item)
+    user = await get_or_create_user(access_token)
+    scrapbook_item = await create_or_update_scrapbook_item(user, title, _id)
+    data = scrapbook_item.json(include={"title", "id"})
 
     github_client = GithubClient()
-    data = scrapbook_item.json(include={"heading"})
     github_client.upsert_file(
-        file_path=f"content-{str(scrapbook_item.id)}.json",
+        file_path=f"public/images/{type}/{str(scrapbook_item.id)}/image-{upload.filename}",
+        file_content=upload.file.read()
+    )
+    github_client.upsert_file(
+        file_path=f"content/{type}/{str(scrapbook_item.id)}/content.json",
         file_content=data
     )
     github_client.create_pr()
-
-    return scrapbook_item

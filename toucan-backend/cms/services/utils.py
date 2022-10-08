@@ -22,18 +22,18 @@ async def get_or_create_user(token: str):
     return user
 
 
-async def create_or_update_scrapbook_item(user: User, scrapbook_item: ScrapbookItem):
+async def create_or_update_scrapbook_item(user: User, title: str, _id: str):
     """Create or update a scrapbook item for a user."""
     try:
-        old_entry = await ScrapbookItem.get(scrapbook_item.id)
+        old_entry = await ScrapbookItem.get(_id)
     except:
         old_entry = None
     if not old_entry:
         scrapbook_item = ScrapbookItem(
-            heading=scrapbook_item.heading,
+            title=title,
             user=user
         )
         scrapbook_item = await scrapbook_item.insert()
     else:
-        await old_entry.set({ScrapbookItem.heading: scrapbook_item.heading})
+        scrapbook_item = await old_entry.set({ScrapbookItem.title: title})
     return scrapbook_item
