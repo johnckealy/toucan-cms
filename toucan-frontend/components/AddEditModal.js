@@ -12,7 +12,7 @@ const AddEditModal = ({ type }) => {
   const { data: session } = useSession({ required: true })
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState(false);
-  const [id, setId] = useState(null);
+  const [id, setId] = useState('null');
   const [images, setImages] = useState([]);
   const maxNumber = 1;
 

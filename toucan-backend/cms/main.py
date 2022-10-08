@@ -5,7 +5,7 @@ from cms.db import MongoClient
 from cms.models import User, ScrapbookItem
 from cms.services.utils import get_or_create_user, create_or_update_scrapbook_item
 from cms.services.github_client import GithubClient
-from typing import Union
+from typing import Union, Optional
 
 
 SEARCH_ORIGIN_URI=os.environ.get('NEXTAUTH_URL', 'http://localhost:3000')
@@ -14,7 +14,7 @@ SEARCH_ORIGIN_URI=os.environ.get('NEXTAUTH_URL', 'http://localhost:3000')
 # TODO Add a way to stay logged into google
 
 app = FastAPI()
-origins = [ SEARCH_ORIGIN_URI ]
+origins = [ '*' ]
 
 
 # TODO Restrict permissions for CORS
