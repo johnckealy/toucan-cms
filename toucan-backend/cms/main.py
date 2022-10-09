@@ -48,6 +48,13 @@ async def scrapbook():
     return await ScrapbookItem.find().to_list()
 
 
+@app.delete("/scrapbooks/{id}")
+async def delete_item(id: str):
+    github_client = GithubClient()
+    github_client.delete_item('menu', id)
+    return {"message": f"Deleted item {id}"}
+
+
 @app.post("/upload")
 async def create_upload_file(upload: UploadFile, access_token: Union[str, None] = Header(default=None, convert_underscores=False), type: str = Form(...), title: str = Form(...), _id: str = Form(...)):
     """Return a list of all the scrapbook items for a user."""

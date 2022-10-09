@@ -25,7 +25,7 @@ const Upload = () => {
           {(menuItems.length == 0  && !loading) && 'No items 🤷‍♀️'}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {menuItems.map((item) => {
-              return <Card key={item.id} title={item.title} imageSrc={item.src} />
+              return <Card key={item.id} id={item.id} title={item.title} imageSrc={item.src} reRender={reRender} />
             })}
           </div>
         </div>

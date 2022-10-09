@@ -86,15 +86,26 @@ class GithubClient:
                 json_data['src'] = self.repo.get_contents(image_path, ref=branch)[0].download_url
                 data.append(json_data)
         except GithubException as e:
-            logger.error(f'Filed to retrieve files from github %s', e)
+            logger.error(f'Failed to retrieve files from github %s', e)
         return data
+
+    def delete_item(self, type: str, id: str):
+        file_path = f'content/{type}'
+        contents = self.repo.get_contents(file_path, ref=self.toucan_branch)
+        for content in contents:
+            if id in content.path:
+                for file in self.repo.get_contents(content.path, ref=self.toucan_branch):
+                    self.repo.delete_file(file.path, "remove files", file.sha, branch=self.toucan_branch)
+                image_path = content.path.replace('content', 'public/images')
+                for file in self.repo.get_contents(image_path, ref=self.toucan_branch):
+                    self.repo.delete_file(file.path, "remove files", file.sha, branch=self.toucan_branch)
 
 
 
 if __name__ == '__main__':
     github_client = GithubClient()
 
-    iamge_urls  = github_client.get_content('content/menu')
+    iamge_urls  = github_client.delete_item('menu', '6342abfbc891eb5e66dc27ee')
 
 
     # github_client.create_pr()

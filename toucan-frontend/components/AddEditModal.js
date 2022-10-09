@@ -71,15 +71,6 @@ const AddEditModal = ({ type, reRender }) => {
 
       <span className={`${loginError ? '' : 'hidden'} text-red-600 border-red-400 border-2 p-4 my-4`}>Authentiation error. Please try logging out and logging back in. </span>
 
-      <div className="">
-        <h3>Upload a design</h3>
-
-        <div className="flex flex-col my-5 ">
-          <span className="text-sm text-gray-500">Title</span>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} type="text"
-            className="border-greyed p-3 rounded-lg shadow-md " placeholder="Enter a title/tags.." />
-        </div>
-      </div>
 
 
       <ImageUploading
@@ -133,6 +124,16 @@ const AddEditModal = ({ type, reRender }) => {
         )}
       </ImageUploading>
 
+      <div className="">
+        <h3>Upload a design</h3>
+
+        <div className="flex flex-col my-5 ">
+          <span className="text-sm text-gray-500">Title</span>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} type="text"
+            className="border-greyed p-3 rounded-lg shadow-md " placeholder="Enter a title/tags.." />
+        </div>
+      </div>
+      u
       <button onClick={sendForm} className="hover:bg-white border-2 border-gray-400 rounded-md p-1 px-7 my-4">
         {saving ? <LoadingSpinner options="w-5 h-5" /> : 'Save'}
       </button>

@@ -1,10 +1,18 @@
-import Image from 'next/image'
+import axios from "axios";
 
-const Card = ({ title, imageSrc }) => {
+const Card = ({ id, title, imageSrc, reRender }) => {
+
+  const deleteItem = async () => {
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URI}/scrapbooks/${id}`)
+    reRender();
+  }
+
+
   return (
     <div className="shadow-lg p-5 bg-white rounded">
-      <Image src={imageSrc} width={300} height={300} />
+      <img src={imageSrc} />
       <h4 className='border-2 p-2 rounded'>{title}</h4>
+      <button onClick={deleteItem}>Delete</button>
     </div>
   );
 }
