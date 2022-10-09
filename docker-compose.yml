@@ -54,6 +54,6 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    command: yarn start
+    # command: yarn start
     networks:
       - caddyweb

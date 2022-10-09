@@ -42,7 +42,7 @@ const AddEditModal = ({ type }) => {
     console.log('### Sending from url: ', process.env.NEXT_PUBLIC_API_URI)
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/upload`,
+        `${process.env.NEXT_PUBLIC_API_URI}/upload/`,
       formData,
       {
         headers: {
