@@ -42,7 +42,7 @@ const AddEditModal = ({ type, reRender }) => {
     formData.append("ctype", type);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/upload/`,
+        `${process.env.NEXT_PUBLIC_API_URI}/upload`,
         formData,
         {
           headers: {
