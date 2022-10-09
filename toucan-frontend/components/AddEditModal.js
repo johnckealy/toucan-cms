@@ -3,17 +3,18 @@ import { useState } from "react";
 import { useSession } from "next-auth/react"
 import Image from "next/image";
 import { BsUpload } from "react-icons/bs";
+import LoadingSpinner from '@/components/LoadingSpinner'
 import { AiFillDelete } from "react-icons/ai";
 import { FaUpload } from "react-icons/fa";
 import axios from "axios";
 
-
-const AddEditModal = ({ type }) => {
+const AddEditModal = ({ type, reRender }) => {
   const { data: session } = useSession({ required: true })
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState(false);
   const [id, setId] = useState('null');
   const [images, setImages] = useState([]);
+  const [loginError, setLoginError] = useState(false);
   const maxNumber = 1;
 
   const onChange = (imageList, addUpdateIndex) => {
@@ -39,17 +40,16 @@ const AddEditModal = ({ type }) => {
     formData.append("_id", id);
     formData.append("title", title);
     formData.append("type", type);
-    console.log('### Sending from url: ', process.env.NEXT_PUBLIC_API_URI)
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URI}/upload/`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          access_token: session.accessToken,
-        },
-      }
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            access_token: session.accessToken,
+          },
+        }
       )
       const data = response.data
       if (data._id) {
@@ -61,6 +61,7 @@ const AddEditModal = ({ type }) => {
       setSaving(false)
     }
     setSaving(false)
+    reRender()
   }
 
 
@@ -68,15 +69,16 @@ const AddEditModal = ({ type }) => {
   return (
     <div className="grid place-content-center w-full border-4 p-10">
 
+      <span className={`${loginError ? '' : 'hidden'} text-red-600 border-red-400 border-2 p-4 my-4`}>Authentiation error. Please try logging out and logging back in. </span>
 
       <div className="">
         <h3>Upload a design</h3>
 
         <div className="flex flex-col my-5 ">
-        <span className="text-sm text-gray-500">Title</span>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} type="text"
-          className="border-greyed p-3 rounded-lg shadow-md " placeholder="Enter a title/tags.." />
-          </div>
+          <span className="text-sm text-gray-500">Title</span>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} type="text"
+            className="border-greyed p-3 rounded-lg shadow-md " placeholder="Enter a title/tags.." />
+        </div>
       </div>
 
 
@@ -131,13 +133,9 @@ const AddEditModal = ({ type }) => {
         )}
       </ImageUploading>
 
-
-
       <button onClick={sendForm} className="hover:bg-white border-2 border-gray-400 rounded-md p-1 px-7 my-4">
-        {saving ? "Saving..." : "Save"}
+        {saving ? <LoadingSpinner options="w-5 h-5" /> : 'Save'}
       </button>
-
-
 
     </div>
   );

@@ -17,7 +17,7 @@ const nextConfig = {
   //   return cfg;
   // },
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['lh3.googleusercontent.com', 'raw.githubusercontent.com'],
   },
   // async redirects() {
   //   return [

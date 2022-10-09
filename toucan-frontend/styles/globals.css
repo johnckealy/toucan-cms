@@ -11,7 +11,7 @@ body {
 
 @layer base {
   h1 {
-    @apply text-4xl md:text-5xl text-default my-2 ;
+    @apply text-4xl md:text-4xl text-default my-2 ;
   }
   h2 {
     @apply text-xl md:text-2xl text-default my-3 md:my-10;

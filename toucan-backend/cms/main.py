@@ -48,10 +48,12 @@ async def scrapbook():
     return await ScrapbookItem.find().to_list()
 
 
-@app.post("/upload/")
+@app.post("/upload")
 async def create_upload_file(upload: UploadFile, access_token: Union[str, None] = Header(default=None, convert_underscores=False), type: str = Form(...), title: str = Form(...), _id: str = Form(...)):
     """Return a list of all the scrapbook items for a user."""
     user = await get_or_create_user(access_token)
+    if user == 'error':
+        return {'error': 'Re-login Required'}
     scrapbook_item = await create_or_update_scrapbook_item(user, title, _id)
     data = scrapbook_item.json(include={"title", "id"})
 
@@ -65,3 +67,26 @@ async def create_upload_file(upload: UploadFile, access_token: Union[str, None] 
         file_content=data
     )
     github_client.create_pr()
+
+
+@app.get("/get-published-content")
+async def get_content():
+    """Refresh the database based on the git state"""
+    github_client = GithubClient()
+    published_menu_data = github_client.get_content('content/menu', published=True)
+    return published_menu_data
+
+
+@app.get("/get-staged-content")
+async def get_content():
+    """Refresh the database based on the git state"""
+    github_client = GithubClient()
+    unpublished_menu_data = github_client.get_content('content/menu', published=False)
+    return unpublished_menu_data
+
+
+@app.get("/publish")
+async def publish():
+    github_client = GithubClient()
+    github_client.merge_to_main()
+    return {"message": "Changes published"}

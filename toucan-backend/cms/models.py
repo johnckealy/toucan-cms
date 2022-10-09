@@ -4,8 +4,6 @@ from beanie import Document, Link, PydanticObjectId
 from pydantic import BaseModel
 
 
-
-
 class User(Document):
     """User model for the database"""
     email:          str
@@ -13,9 +11,6 @@ class User(Document):
     given_name:     Optional[str]
     family_name:    Optional[str]
     image_url:      Optional[str]
-
-
-
 
 
 class ScrapbookItem(Document):

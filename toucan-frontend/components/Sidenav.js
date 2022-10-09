@@ -71,7 +71,7 @@ export default function SideNav({ navHeader, children }) {
         <div className='hidden md:flex h-full '>
           <SideNavInner navHeader={navHeader} navItems={navItems} />
         </div>
-        <div className='overflow-y-auto'>
+        <div className='w-full overflow-y-auto'>
           {children}
         </div>
       </div>

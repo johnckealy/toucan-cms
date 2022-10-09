@@ -1,8 +1,10 @@
+import Image from 'next/image'
 
-const Card = ({ title }) => {
+const Card = ({ title, imageSrc }) => {
   return (
     <div className="shadow-lg p-5 bg-white rounded">
-      <h4>{title}</h4>
+      <Image src={imageSrc} width={300} height={300} />
+      <h4 className='border-2 p-2 rounded'>{title}</h4>
     </div>
   );
 }

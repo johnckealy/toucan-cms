@@ -2,6 +2,8 @@ from github import Github
 from github.GithubException import GithubException
 import os
 import logging
+import json
+
 
 logger = logging.getLogger(__name__)
 
@@ -67,19 +69,33 @@ class GithubClient:
         except Exception as exp:
             logger.exception(f'Failed to merge Toucan PR {exp}')
 
+    def get_content(self, file_path: str, published=True) -> dict:
+        """Get the content of a file from the main branch"""
+        branch = self.trunk if published else self.toucan_branch
+
+        data = []
+        try:
+            for content_id in self.repo.get_contents(file_path, ref=branch):
+                files = self.repo.get_contents(content_id.path, ref=branch)
+                if len(files) != 1:
+                    logger.error(f'[Github Client Error] Expected 2 files in {content_id.path}, got {len(files)}')
+                else:
+                    content = self.repo.get_contents(files[0].path, ref=branch)
+                    json_data = json.loads(content.decoded_content)
+                image_path = content_id.path.replace('content', 'public/images')
+                json_data['src'] = self.repo.get_contents(image_path, ref=branch)[0].download_url
+                data.append(json_data)
+        except GithubException as e:
+            logger.error(f'Filed to retrieve files from github %s', e)
+        return data
+
 
 
 if __name__ == '__main__':
     github_client = GithubClient()
 
-    with open('cms/john.jpg', 'rb') as file:
-        content = file.read()
+    iamge_urls  = github_client.get_content('content/menu')
 
 
-    github_client.upsert_file(
-        file_path="john.jpg",
-        file_content=content
-    )
-
-    github_client.create_pr()
+    # github_client.create_pr()
     # github_client.merge_to_main()

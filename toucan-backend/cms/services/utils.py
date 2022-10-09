@@ -8,7 +8,11 @@ logger = logging.getLogger(__name__)
 async def get_or_create_user(token: str):
     """Query the Google API to return user info based on the Google access token. Create
     a new user in our DB if one does not exist."""
+
     response = requests.get(f"https://www.googleapis.com/oauth2/v3/userinfo?access_token={token}").json()
+    if response.get('error'):
+        return 'error'
+
     user = await User.find_one(User.sub == response.get('sub'), fetch_links=True)
     if not user:
       user = User(
