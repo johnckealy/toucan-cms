@@ -35,8 +35,8 @@ const Upload = ({ type }) => {
     const getScrapbook = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-published-content/?ctype=${type}`)
-        const stagedResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-staged-content/?ctype=${type}`)
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-published-content?ctype=${type}`)
+        const stagedResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-staged-content?ctype=${type}`)
 
         const uniquestagedResponse = stagedResponse.data.filter(function (obj) {
           return !response.data.some(function (obj2) {
@@ -56,8 +56,8 @@ const Upload = ({ type }) => {
 
   const reRender = async () => {
     setLoading(true);
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-published-content/?ctype=${type}`)
-    const stagedResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-staged-content/?ctype=${type}`)
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-published-content?ctype=${type}`)
+    const stagedResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-staged-content?ctype=${type}`)
 
     const uniquestagedResponse = stagedResponse.data.filter(function (obj) {
       return !response.data.some(function (obj2) {
