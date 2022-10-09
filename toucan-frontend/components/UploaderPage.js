@@ -73,7 +73,7 @@ const Upload = ({ type }) => {
   const sendPublish = async () => {
     setPublishing(true)
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/publish/`)
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/publish`)
     }
     catch (error) {
       console.log(error)
