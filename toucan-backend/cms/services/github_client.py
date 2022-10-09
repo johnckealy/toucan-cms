@@ -91,6 +91,10 @@ class GithubClient:
 
     def delete_item(self, type: str, id: str):
         file_path = f'content/{type}'
+        try:
+            self.repo.get_branch(branch=self.toucan_branch)
+        except GithubException:
+            self.create_new_branch()
         contents = self.repo.get_contents(file_path, ref=self.toucan_branch)
         for content in contents:
             if id in content.path:
@@ -99,6 +103,7 @@ class GithubClient:
                 image_path = content.path.replace('content', 'public/images')
                 for file in self.repo.get_contents(image_path, ref=self.toucan_branch):
                     self.repo.delete_file(file.path, "remove files", file.sha, branch=self.toucan_branch)
+        self.create_pr()
 
 
 

@@ -1,30 +1,29 @@
 import Dashboard from "@/components/Dashboard";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react"
 import axios from "axios";
 import Card from "@/components/Card";
 import AddEditModal from "@/components/AddEditModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
+import { BiWorld } from "react-icons/bi";
 
 
 const Upload = () => {
-  const [menuItems, setMenuItems] = useState([]);
-  const [unPublishedMenuItems, setUnPublishedMenuItems] = useState([]);
+  const [items, setItems] = useState([]);
+  const [unPublisheditems, setUnPublisheditems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [publishing, setPublishing] = useState(false);
 
-  const MenuItemGrid = ({ menuItems, sectionTitle }) => {
+  const ItemGrid = ({ items, sectionTitle }) => {
     return (
       <div className="m-10">
         <hr />
         <h2>{sectionTitle}</h2>
 
         <div className="m-2 md:p-10">
-          {loading && <LoadingSpinner options="w-8 h-8" /> }
-          {(menuItems.length == 0  && !loading) && 'No items 🤷‍♀️'}
+          {loading && <LoadingSpinner options="w-8 h-8" />}
+          {(items.length == 0 && !loading) && 'No items 🤷‍♀️'}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {menuItems.map((item) => {
+            {items.map((item) => {
               return <Card key={item.id} id={item.id} title={item.title} imageSrc={item.src} reRender={reRender} />
             })}
           </div>
@@ -45,8 +44,8 @@ const Upload = () => {
             return obj.id == obj2.id;
           });
         });
-        setMenuItems(response.data)
-        setUnPublishedMenuItems(uniquestagedResponse)
+        setItems(response.data)
+        setUnPublisheditems(uniquestagedResponse)
       }
       catch (error) {
         console.log(error)
@@ -56,7 +55,7 @@ const Upload = () => {
     getScrapbook()
   }, [])
 
-  const reRender = async() => {
+  const reRender = async () => {
     setLoading(true);
     const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-published-content/`)
     const stagedResponse = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/get-staged-content/`)
@@ -66,10 +65,9 @@ const Upload = () => {
         return obj.id == obj2.id;
       });
     });
-    setMenuItems(response.data)
-    setUnPublishedMenuItems(uniquestagedResponse)
+    setItems(response.data)
+    setUnPublisheditems(uniquestagedResponse)
     setLoading(false);
-
   }
 
 
@@ -81,24 +79,36 @@ const Upload = () => {
     catch (error) {
       console.log(error)
     }
+    reRender();
     setPublishing(false)
   }
 
+  const PublishBtn = () => {
+    return (
+      <div className="flex items-center gap-2">
+        <BiWorld />
+        <span>Publish Changes</span>
+      </div>
+    )
+  }
 
   return (
     <Dashboard>
-      <h1>Menú Items</h1>
+      <div className="container mx-auto mt-20">
+
+        <h1>Menú Items</h1>
 
 
-      <div className="flex flex-col">
-        <div className="">
-          <button onClick={sendPublish} className="hover:bg-white border-2 border-gray-400 rounded-md p-1 px-7 my-4">
-            {publishing ? <LoadingSpinner options="w-5 h-5" /> : 'Publish Changes'}
-          </button>
+        <div className="flex flex-col">
+          <div className="">
+            <button onClick={sendPublish} className="hover:bg-white border-2 border-gray-400 rounded-md p-1 px-7 my-4">
+              {publishing ? <LoadingSpinner options="w-5 h-5" /> : <PublishBtn />}
+            </button>
+          </div>
+          <AddEditModal type="menu" reRender={reRender} />
+          <ItemGrid sectionTitle="Unpublished Items" items={unPublisheditems} />
+          <ItemGrid sectionTitle="Published Items" items={items} />
         </div>
-        <AddEditModal type="menu" reRender={reRender}/>
-        <MenuItemGrid sectionTitle="Unpublished Items" menuItems={unPublishedMenuItems} />
-        <MenuItemGrid sectionTitle="Published Items" menuItems={menuItems} />
       </div>
 
     </Dashboard>
