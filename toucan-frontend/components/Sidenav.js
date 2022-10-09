@@ -23,7 +23,7 @@ export default function SideNav({ navHeader, children }) {
         <div className="flex h-full flex-col min-w-max overflow-hidden bg-secondary-bg">
           <div className='flex flex-col items-end p-3 '>
             <div className="flex items-center gap-2">
-              <Image className="rounded-full" src={session.user.image} width={20} height={20} />
+              <Image className="rounded-full" src={session.user.image} width={20} height={20} alt="" />
               {session.user.name}
             </div>
             <button className=""  onClick={() => signOut()}>

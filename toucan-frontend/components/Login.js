@@ -19,7 +19,7 @@ export default function SignIn() {
   const GoogleBtn = () => {
     return (
       <button onClick={() => signIn('google', { callbackUrl: '/' })}>
-        <Image src="/images/btn_google.png" width={250} height={60} />
+        <Image src="/images/btn_google.png" width={250} height={60} alt="" />
       </button>
 
     )

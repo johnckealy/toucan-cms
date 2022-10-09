@@ -2,14 +2,14 @@ import Dashboard from "@/components/Dashboard";
 import UploaderPage from "@/components/UploaderPage";
 
 
-const HomePage = () => {
+const LocalPage = () => {
   return (
     <Dashboard>
-      <h1>Menú Items</h1>
-      <UploaderPage type="menu" />
+      <h1>Local</h1>
+      <UploaderPage type="local" />
     </Dashboard>
   )
 }
 
 
-export default HomePage
+export default LocalPage

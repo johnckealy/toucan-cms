@@ -2,14 +2,14 @@ import Dashboard from "@/components/Dashboard";
 import UploaderPage from "@/components/UploaderPage";
 
 
-const HomePage = () => {
+const Graphics = () => {
   return (
     <Dashboard>
-      <h1>Menú Items</h1>
-      <UploaderPage type="menu" />
+      <h1>Imágines Gráficas</h1>
+      <UploaderPage type="graphics" />
     </Dashboard>
   )
 }
 
 
-export default HomePage
+export default Graphics

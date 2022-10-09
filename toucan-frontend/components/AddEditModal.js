@@ -39,7 +39,7 @@ const AddEditModal = ({ type, reRender }) => {
     formData.append("upload", images[0].file);
     formData.append("_id", id);
     formData.append("title", title);
-    formData.append("type", type);
+    formData.append("ctype", type);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URI}/upload/`,

@@ -56,7 +56,7 @@ async def delete_item(id: str):
 
 
 @app.post("/upload")
-async def create_upload_file(upload: UploadFile, access_token: Union[str, None] = Header(default=None, convert_underscores=False), type: str = Form(...), title: str = Form(...), _id: str = Form(...)):
+async def create_upload_file(upload: UploadFile, access_token: Union[str, None] = Header(default=None, convert_underscores=False), ctype: str = Form(...), title: str = Form(...), _id: str = Form(...)):
     """Return a list of all the scrapbook items for a user."""
     user = await get_or_create_user(access_token)
     if user == 'error':
@@ -66,29 +66,29 @@ async def create_upload_file(upload: UploadFile, access_token: Union[str, None] 
 
     github_client = GithubClient()
     github_client.upsert_file(
-        file_path=f"public/images/{type}/{str(scrapbook_item.id)}/image-{upload.filename}",
+        file_path=f"public/images/{ctype}/{str(scrapbook_item.id)}/image-{upload.filename}",
         file_content=upload.file.read()
     )
     github_client.upsert_file(
-        file_path=f"content/{type}/{str(scrapbook_item.id)}/content.json",
+        file_path=f"content/{ctype}/{str(scrapbook_item.id)}/content.json",
         file_content=data
     )
     github_client.create_pr()
 
 
 @app.get("/get-published-content")
-async def get_content():
+async def get_content(ctype: str):
     """Refresh the database based on the git state"""
     github_client = GithubClient()
-    published_menu_data = github_client.get_content('content/menu', published=True)
+    published_menu_data = github_client.get_content(f'content/{ctype}', published=True)
     return published_menu_data
 
 
 @app.get("/get-staged-content")
-async def get_content():
+async def get_content(ctype: str):
     """Refresh the database based on the git state"""
     github_client = GithubClient()
-    unpublished_menu_data = github_client.get_content('content/menu', published=False)
+    unpublished_menu_data = github_client.get_content(f'content/{ctype}', published=False)
     return unpublished_menu_data
 
 
